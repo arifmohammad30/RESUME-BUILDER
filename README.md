@@ -147,4 +147,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 ---
 
-*This README was generated with the help of Gemini.* 
