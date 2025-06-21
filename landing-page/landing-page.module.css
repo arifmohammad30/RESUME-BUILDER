@@ -1,0 +1,19 @@
+/* Dedicated styles for the landing page */
+.landingRoot {
+  font-family: 'Inter', 'Roboto Flex', Arial, sans-serif;
+  background: transparent;
+}
+
+.jomhuriaFont {
+  font-family: 'Jomhuria', cursive;
+}
+
+.montserratFont {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.poppinsFont {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+} 

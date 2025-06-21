@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for landing page */
+body {
+  margin: 0;
+  font-family: 'Inter', 'Roboto Flex', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Poppins font for headers */
+.poppins-font {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+} 
