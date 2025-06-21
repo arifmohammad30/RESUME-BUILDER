@@ -58,7 +58,9 @@ export default function ResumeBuilder() {
   };
 
   const handleGoToLandingPage = () => {
-    window.location.href = "/";
+    // Redirect to the landing page URL from environment variables, with a fallback.
+    const landingPageUrl = import.meta.env.VITE_LANDING_URL || "https://arifmohammad30.github.io/RESUME-BUILDER/";
+    window.location.href = landingPageUrl;
   };
 
   const handleClearData = () => {
