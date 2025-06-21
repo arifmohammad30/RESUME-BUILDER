@@ -127,22 +127,22 @@ export function ResumeFormContainer() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Progress Bar */}
-      <div className="mb-8 overflow-x-auto">
-        <div className="flex items-center justify-between min-w-[500px]">
+      <div className="mb-6 md:mb-8 overflow-x-auto">
+        <div className="flex items-center justify-between min-w-[500px] md:min-w-0 px-1 md:px-2">
           {steps.map((step, index) => (
-            <div key={step.id} className="flex items-center">
+            <div key={step.id} className="flex items-center flex-1 min-w-0">
               <div
-                className={`flex items-center justify-center w-7 h-7 rounded-full border-2 transition-all duration-200 shadow-sm
+                className={`flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 rounded-full border-2 transition-all duration-200 shadow-sm flex-shrink-0
                   ${index < currentStep ? "bg-[#4ADE80] border-[#4ADE80] text-white" :
                     index === currentStep ? "bg-white border-[#4ADE80] text-[#4ADE80] shadow-md" :
                     "bg-gray-100 border-gray-300 text-gray-400"}
                 `}
-                style={{ minWidth: 28 }}
+                style={{ minWidth: 20 }}
               >
-                {index + 1}
+                <span className="text-xs sm:text-xs md:text-sm font-medium">{index + 1}</span>
               </div>
               <div
-                className={`ml-2 text-sm font-semibold transition-colors duration-200
+                className={`ml-0.5 md:ml-1 lg:ml-2 text-xs sm:text-xs md:text-sm font-semibold transition-colors duration-200 break-words hyphens-auto
                   ${index === currentStep ? "text-[#4ADE80]" : index < currentStep ? "text-[#4ADE80] opacity-70" : "text-gray-400"}
                 `}
               >
@@ -150,7 +150,7 @@ export function ResumeFormContainer() {
               </div>
               {index < steps.length - 1 && (
                 <div
-                  className={`h-1 w-16 mx-2 rounded-full transition-all duration-200
+                  className={`h-0.5 sm:h-1 w-6 sm:w-8 md:w-16 mx-0.5 md:mx-1 lg:mx-2 rounded-full transition-all duration-200 flex-shrink-0
                     ${index < currentStep ? "bg-[#4ADE80]" : "bg-gray-200"}
                   `}
                 />
