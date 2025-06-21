@@ -12,7 +12,7 @@ export default defineConfig({
   root: __dirname,
   base: "/RESUME-BUILDER/",
   build: {
-    outDir: path.resolve(__dirname, "dist"),
+    outDir: path.resolve(__dirname, "../dist"),
     emptyOutDir: true,
     sourcemap: false,
     minify: "terser",
