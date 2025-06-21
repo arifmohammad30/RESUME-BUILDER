@@ -15,7 +15,7 @@ export default function LandingPage() {
       <div 
         className="fixed inset-0 w-full h-full"
         style={{
-          backgroundImage: 'url(/landing.png)',
+          backgroundImage: 'url(/RESUME-BUILDER/landing.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
