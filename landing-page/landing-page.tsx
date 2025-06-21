@@ -4,9 +4,8 @@ import styles from './landing-page.module.css';
 
 export default function LandingPage() {
   const handleStartBuilding = () => {
-    // Point to the separate builder application
-    // This will be updated after deploying the builder app to Netlify
-    window.location.href = process.env.VITE_BUILDER_URL || "https://resumegenius-builder.netlify.app";
+    // Point to the live builder application on Netlify
+    window.location.href = "https://resumegenious.netlify.app/";
   };
 
   return (
