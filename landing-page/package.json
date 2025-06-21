@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "description": "ResumeGenius Landing Page - Professional resume builder landing page",
-  "homepage": "https://your-username.github.io/your-repo-name",
+  "homepage": "https://arifmohammad30.github.io/RESUME-BUILDER",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
