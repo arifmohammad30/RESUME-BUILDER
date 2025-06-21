@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   root: __dirname,
-  base: process.env.NODE_ENV === "production" ? "/" : "/",
+  base: "/RESUME-BUILDER/",
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
