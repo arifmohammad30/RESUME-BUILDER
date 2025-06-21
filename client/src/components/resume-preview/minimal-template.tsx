@@ -168,9 +168,9 @@ export function MinimalTemplate({ data }: MinimalTemplateProps) {
                   </p>
                 )}
                 <div className="flex justify-center space-x-6">
-                  {project.liveLink && project.liveLink.trim() !== '' && (
+                  {project.liveUrl && project.liveUrl.trim() !== '' && (
                     <a 
-                      href={project.liveLink} 
+                      href={project.liveUrl} 
                       className="text-gray-600 hover:text-gray-900 flex items-center font-light text-sm"
                       target="_blank" 
                       rel="noopener noreferrer"
@@ -179,9 +179,9 @@ export function MinimalTemplate({ data }: MinimalTemplateProps) {
                       View Live
                     </a>
                   )}
-                  {project.repoLink && project.repoLink.trim() !== '' && (
+                  {project.codeUrl && project.codeUrl.trim() !== '' && (
                     <a 
-                      href={project.repoLink} 
+                      href={project.codeUrl} 
                       className="text-gray-600 hover:text-gray-900 flex items-center font-light text-sm"
                       target="_blank" 
                       rel="noopener noreferrer"

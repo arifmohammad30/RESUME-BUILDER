@@ -139,7 +139,11 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textDecoration: 'underline',
     marginRight: 12,
-  }
+  },
+  projectLinks: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
 });
 
 interface ModernBluePDFProps {
@@ -234,11 +238,11 @@ export const ModernBluePDF = ({ data }: ModernBluePDFProps) => (
             {data.projects.map((project, i) => (
               <View key={i} style={styles.projectItem}>
                 <Text style={styles.projectTitle}>{project.name}</Text>
-                <Text style={styles.projectTech}>{project.technologies}</Text>
+                <Text style={styles.projectTech}>{project.tags.join(', ')}</Text>
                 {project.description && <Text style={styles.projectDescription}>{project.description}</Text>}
-                <View style={{ flexDirection: 'row', marginTop: 4 }}>
-                  {project.liveLink && <Link src={project.liveLink} style={styles.projectLink}>Live Demo</Link>}
-                  {project.repoLink && <Link src={project.repoLink} style={styles.projectLink}>Code</Link>}
+                <View style={styles.projectLinks}>
+                  {project.liveUrl && <Link src={project.liveUrl} style={styles.projectLink}>Live Demo</Link>}
+                  {project.codeUrl && <Link src={project.codeUrl} style={styles.projectLink}>Code</Link>}
                 </View>
               </View>
             ))}

@@ -4,7 +4,15 @@
   "type": "module",
   "license": "MIT",
   "description": "Professional resume builder with 15+ ATS-friendly templates. Create and download resumes as PDF instantly.",
-  "keywords": ["resume", "cv", "builder", "pdf", "ats-friendly", "professional", "free"],
+  "keywords": [
+    "resume",
+    "cv",
+    "builder",
+    "pdf",
+    "ats-friendly",
+    "professional",
+    "free"
+  ],
   "author": "ResumeGenius Team",
   "repository": {
     "type": "git",
@@ -102,6 +110,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.17",
+    "terser": "^5.43.1",
     "typescript": "5.6.3",
     "vite": "^5.4.14"
   },

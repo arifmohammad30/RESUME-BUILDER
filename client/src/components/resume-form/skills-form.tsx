@@ -26,6 +26,7 @@ import { useState } from "react";
 const skillSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Skill name is required"),
+  level: z.string().min(1, "Skill level is required"),
 });
 
 const skillsSchema = z.object({
@@ -63,14 +64,14 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
     const newSkill: Skill = {
       id: crypto.randomUUID(),
       name: newSkillName.trim(),
-      level: ""
+      level: "Intermediate" // Default level
     };
 
     // Update form state
     append(newSkill);
     
     // Update parent component state
-    onChange({ skills: [...data.skills, { ...newSkill }] });
+    onChange({ skills: [...data.skills, newSkill] });
     
     // Clear input
     setNewSkillName("");
@@ -81,12 +82,17 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
     remove(index);
     
     // Update parent component state
-    const updatedSkills = data.skills.filter((_, i) => i !== index).map(skill => ({ ...skill, level: skill.level || "" }));
+    const updatedSkills = data.skills.filter((_, i) => i !== index);
     onChange({ skills: updatedSkills });
   };
 
   const onSubmit = (values: SkillsFormValues) => {
-    onChange({ skills: values.skills });
+    // Ensure all skills have the level property
+    const skillsWithLevel = values.skills.map(skill => ({
+      ...skill,
+      level: skill.level || "Intermediate"
+    }));
+    onChange({ skills: skillsWithLevel });
     onSave();
   };
 
