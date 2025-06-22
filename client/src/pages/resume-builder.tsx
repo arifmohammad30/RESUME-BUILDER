@@ -205,7 +205,8 @@ export default function ResumeBuilder() {
             <div className="w-full flex justify-between items-center mb-6">
               <TemplateSelector
                 selectedTemplate={selectedTemplate}
-                onTemplateChange={handleTemplateChange}
+                onSelectTemplate={handleTemplateChange}
+                onClose={() => {}}
               />
               <Button onClick={handleDownload} disabled={isDownloading}>
                 {isDownloading ? (
