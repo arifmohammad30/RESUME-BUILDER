@@ -33,6 +33,9 @@ export function ResumePreview({ data, template, onTemplateChange, className, isL
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
   const [scale, setScale] = useState(1);
   const [baseScale, setBaseScale] = useState(1);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [countdown, setCountdown] = useState(30);
+  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const updateScale = () => {
@@ -57,6 +60,29 @@ export function ResumePreview({ data, template, onTemplateChange, className, isL
     } else {
       // Zoom out by 20%, but don't go smaller than the base scale
       setScale(s => Math.max(s / 1.2, baseScale));
+    }
+  };
+
+  const handleDownload = async () => {
+    // Start timer
+    setCountdown(30);
+    const intervalId = setInterval(() => {
+      setCountdown(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    setTimerId(intervalId);
+
+    try {
+      setIsDownloading(true);
+      await generatePDF(data, template);
+    } catch (error) {
+      const err = error as any;
+      console.error("Error generating PDF:", err, err?.message, err?.stack);
+      alert("Failed to generate PDF. " + (err?.message || ""));
+    } finally {
+      setIsDownloading(false);
+      // Clear timer
+      clearInterval(intervalId);
+      setTimerId(null);
     }
   };
 
@@ -141,11 +167,22 @@ export function ResumePreview({ data, template, onTemplateChange, className, isL
             variant="outline"
             size="icon"
             className="bg-white/90 backdrop-blur-sm shadow-md rounded-full"
-            onClick={async () => await generatePDF(data, template)}
+            onClick={handleDownload}
+            disabled={isDownloading}
             title="Download PDF"
           >
-            <Download className="w-5 h-5 text-green-700" />
+            {isDownloading ? (
+              <Loader2 className="w-5 h-5 text-green-700 animate-spin" />
+            ) : (
+              <Download className="w-5 h-5 text-green-700" />
+            )}
           </Button>
+          {isDownloading && (
+            <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <span>Generating...</span>
+              <span>({countdown}s)</span>
+            </div>
+          )}
         </div>
       </div>
 
