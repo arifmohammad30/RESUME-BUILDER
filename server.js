@@ -1,5 +1,6 @@
 import express from 'express';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -31,18 +32,13 @@ app.post('/api/generate-pdf', async (req, res) => {
 
     console.log('Launching browser...');
 
-    // Launch browser with better settings
+    // Launch browser with serverless-optimized settings
     browser = await puppeteer.launch({
-      headless: 'new',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu'
-      ]
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
 
     console.log('Creating new page...');
