@@ -36,6 +36,7 @@ export default function ResumeBuilder() {
   const [showPreview, setShowPreview] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>("classic-professional");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
 
   const handleDataChange = (data: Partial<ResumeData>) => {
     setResumeData((prev) => ({ ...prev, ...data }));
@@ -201,35 +202,46 @@ export default function ResumeBuilder() {
         </div>
       ) : (
         <div className="w-full flex-1 flex flex-col">
-          <div className="w-full flex-1 relative">
-            <div className="w-full flex justify-between items-center mb-6">
-              <TemplateSelector
-                selectedTemplate={selectedTemplate}
-                onSelectTemplate={handleTemplateChange}
-                onClose={() => {}}
-              />
-              <Button onClick={handleDownload} disabled={isDownloading}>
-                {isDownloading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Download className="w-4 h-4" />
-                )}
-                <span className="ml-2">Download</span>
-              </Button>
-            </div>
-            <div className="w-full flex-1 overflow-auto" data-resume-preview>
-              <ResumePreview
-                data={resumeData}
-                template={selectedTemplate}
-                onTemplateChange={handleTemplateChange}
-                isLoading={isDownloading}
-                onEdit={() => {
-                  setShowPreview(false);
-                  setCurrentStep(steps.length - 2);
-                }}
-              />
-            </div>
+          <div className="w-full flex justify-between items-center p-4 bg-gray-50 border-b">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              onClick={() => setIsTemplateModalOpen(true)}
+            >
+              <Palette className="w-5 h-5 text-green-600" />
+              <span>Change Template</span>
+            </Button>
+            <Button onClick={handleDownload} disabled={isDownloading}>
+              {isDownloading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              <span className="ml-2">Download</span>
+            </Button>
           </div>
+          <div className="w-full flex-1 relative overflow-auto" data-resume-preview>
+            <ResumePreview
+              data={resumeData}
+              template={selectedTemplate}
+              onTemplateChange={handleTemplateChange}
+              isLoading={isDownloading}
+              onEdit={() => {
+                setShowPreview(false);
+                setCurrentStep(steps.length - 2);
+              }}
+            />
+          </div>
+          {isTemplateModalOpen && (
+            <TemplateSelector
+              selectedTemplate={selectedTemplate}
+              onSelectTemplate={(template) => {
+                handleTemplateChange(template);
+                setIsTemplateModalOpen(false);
+              }}
+              onClose={() => setIsTemplateModalOpen(false)}
+            />
+          )}
         </div>
       )}
     </div>
