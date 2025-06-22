@@ -56,64 +56,25 @@ export function PersonalInfoForm({ data, onChange, onSave, onBack }: PersonalInf
     mode: "onChange",
   });
 
-  const handleClearData = () => {
-    if (window.confirm("Are you sure you want to start fresh? All your data will be cleared.")) {
-      // Clear all form fields
-      form.reset({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        location: "",
-        jobTitle: "",
-        summary: "",
-        website: "",
-        linkedin: "",
-        github: "",
-      });
-      onChange({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        location: "",
-        jobTitle: "",
-        summary: "",
-        website: "",
-        linkedin: "",
-        github: "",
-      });
-    }
-  };
-
   const onSubmit = (values: PersonalInfoFormValues) => {
     onChange(values);
     onSave();
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
-      <div className="flex justify-between items-center">
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-8 py-6 sm:py-8 md:py-10 space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
         <div>
-          <h2 className="text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Personal Information</h2>
-          <p className="text-gray-600">Let's start with your basic information. This will be the foundation of your resume.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Personal Information</h2>
+          <p className="text-gray-600 text-sm sm:text-base">Let's start with your basic information. This will be the foundation of your resume.</p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleClearData}
-          className="text-red-600 border-red-200 hover:bg-red-50"
-        >
-          <RotateCcw className="w-4 h-4 mr-2" />
-          Start Fresh
-        </Button>
       </div>
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Card className="p-6 space-y-4 border border-green-200 rounded-lg shadow-sm bg-green-50/20">
+          <Card className="p-4 sm:p-6 space-y-4 border border-green-200 rounded-xl shadow-xl bg-gradient-to-br from-green-50/40 to-white">
             {/* Name Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="firstName"
@@ -157,7 +118,7 @@ export function PersonalInfoForm({ data, onChange, onSave, onBack }: PersonalInf
             </div>
 
             {/* Contact Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="email"
@@ -202,7 +163,7 @@ export function PersonalInfoForm({ data, onChange, onSave, onBack }: PersonalInf
             </div>
 
             {/* Location and Job Title */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="location"
@@ -273,9 +234,9 @@ export function PersonalInfoForm({ data, onChange, onSave, onBack }: PersonalInf
           </Card>
 
           {/* Online Presence */}
-          <Card className="p-6 space-y-4 border border-green-200 rounded-lg shadow-sm bg-green-50/20">
-            <h3 className="text-lg font-semibold text-green-700">Online Presence (Optional)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="p-4 sm:p-6 space-y-4 border border-green-200 rounded-xl shadow-xl bg-gradient-to-br from-green-50/40 to-white">
+            <h3 className="text-base sm:text-lg font-semibold text-green-700">Online Presence (Optional)</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="website"
@@ -339,14 +300,11 @@ export function PersonalInfoForm({ data, onChange, onSave, onBack }: PersonalInf
             </div>
           </Card>
 
-          <div className="flex justify-between pt-6">
-            <Button type="button" variant="outline" onClick={onBack}>
-              Back to Home
-            </Button>
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6">
             <Button 
               type="submit"
               disabled={!form.formState.isValid}
-              className="bg-green-600 hover:bg-green-700"
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 rounded-lg transition font-semibold"
             >
               Next: Experience <ArrowRight className="ml-2 w-4 h-4" />
             </Button>

@@ -33,6 +33,7 @@ export function MinimalTemplate({ data }: MinimalTemplateProps) {
     <div 
       id="resume-template"
       className="bg-white shadow-xl rounded-lg overflow-hidden mx-auto print:shadow-none print:rounded-none w-full" 
+      style={{ maxWidth: '210mm', minHeight: '297mm', margin: 'auto', fontFamily: 'Inter, Arial, sans-serif' }}
     >
       <div className="p-12 bg-gray-50 border border-gray-200 rounded-xl shadow-xl">
         {/* Header Section */}

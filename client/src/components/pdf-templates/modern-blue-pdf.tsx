@@ -1,22 +1,24 @@
-import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link, Font } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/schema";
 
-// Register fonts
+// Register Inter font
 Font.register({
   family: "Inter",
   fonts: [
-    { src: "/fonts/Inter-Regular.ttf" },
-    { src: "/fonts/Inter-Medium.ttf", fontWeight: 500 },
-    { src: "/fonts/Inter-SemiBold.ttf", fontWeight: 600 },
-    { src: "/fonts/Inter-Bold.ttf", fontWeight: 700 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 400 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 500 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 600 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 700 },
   ],
 });
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#fff',
     fontFamily: "Inter",
+    color: '#222',
+    minHeight: '100%',
   },
   sidebar: {
     width: 220,
@@ -185,7 +187,11 @@ export const ModernBluePDF = ({ data }: ModernBluePDFProps) => (
           <View style={{ width: '100%' }}>
             <Text style={styles.sectionTitleSidebar}>CERTIFICATIONS</Text>
             {data.certifications.map((cert, i) => (
-              <Text key={i} style={styles.contactInfo}>{cert.name} ({cert.year})</Text>
+              cert.url ? (
+                <Link key={i} src={cert.url} style={styles.contactInfo}>{cert.name}</Link>
+              ) : (
+                <Text key={i} style={styles.contactInfo}>{cert.name}</Text>
+              )
             ))}
           </View>
         )}

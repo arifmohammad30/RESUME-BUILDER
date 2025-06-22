@@ -38,7 +38,7 @@ export function ModernBlueTemplate({ data }: { data: ResumeData }) {
           <div className="w-full">
             <h2 className="font-semibold text-lg mb-3">CERTIFICATIONS</h2>
             {data.certifications.map((cert, i) => (
-              <p key={i} className="text-sm mb-1 opacity-90">{cert.name} ({cert.year})</p>
+              <p key={i} className="text-sm mb-1 opacity-90">{cert.name}</p>
             ))}
           </div>
         )}

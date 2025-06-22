@@ -121,15 +121,15 @@ export function EducationForm({ data, onChange, onSave, onBack }: EducationFormP
   }, [data.education, form]);
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-8 py-6 sm:py-8 md:py-10 space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
       <div>
-        <h2 className="text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Education</h2>
-        <p className="text-gray-600">Add your educational background.</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Education</h2>
+        <p className="text-gray-600 text-sm sm:text-base">Add your educational background.</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {form.watch("education").map((education, index) => (
-            <div key={education.id} className="p-6 space-y-4 rounded-lg border border-green-200 shadow-sm bg-green-50/20">
+            <div key={education.id} className="p-4 sm:p-6 space-y-4 rounded-xl border border-green-200 shadow-xl bg-gradient-to-br from-green-50/40 to-white">
               <div className="flex justify-between items-center">
                 {form.watch("education").length > 1 && (
                   <Button
@@ -143,7 +143,7 @@ export function EducationForm({ data, onChange, onSave, onBack }: EducationFormP
                   </Button>
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name={`education.${index}.school`}
@@ -193,7 +193,7 @@ export function EducationForm({ data, onChange, onSave, onBack }: EducationFormP
                   )}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name={`education.${index}.startDate`}
@@ -314,13 +314,13 @@ export function EducationForm({ data, onChange, onSave, onBack }: EducationFormP
             Add Education
           </Button>
 
-          <div className="flex justify-between mt-6">
-            <Button type="button" variant="outline" onClick={onBack} className="border-green-500 text-green-700 hover:bg-green-50">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 mt-6">
+            <Button type="button" variant="outline" onClick={onBack} className="w-full sm:w-auto border-green-500 text-green-700 hover:bg-green-50">
               Back
             </Button>
             <Button 
               type="submit" 
-              className="bg-green-500 text-white hover:bg-green-600"
+              className="w-full sm:w-auto bg-green-500 text-white hover:bg-green-600 rounded-lg transition font-semibold"
               onClick={() => {
                 const values = form.getValues();
                 onSubmit(values);

@@ -115,15 +115,15 @@ export function ProjectsForm({ data, onChange, onSave, onBack }: ProjectsFormPro
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-8 py-6 sm:py-8 md:py-10 space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
       <div>
-        <h2 className="text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Projects</h2>
-        <p className="text-gray-600">Add your notable projects and their details.</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Projects</h2>
+        <p className="text-gray-600 text-sm sm:text-base">Add your notable projects and their details.</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {data.projects.map((project, index) => (
-            <Card key={project.id} className="p-6 space-y-4 border border-green-200 rounded-lg shadow-sm bg-green-50/20">
+            <Card key={project.id} className="p-4 sm:p-6 space-y-4 border border-green-200 rounded-xl shadow-xl bg-gradient-to-br from-green-50/40 to-white">
               <div className="flex justify-end items-center">
                 {data.projects.length > 1 && (
                   <Button
@@ -176,7 +176,7 @@ export function ProjectsForm({ data, onChange, onSave, onBack }: ProjectsFormPro
                 )}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name={`projects.${index}.codeUrl`}
@@ -274,11 +274,11 @@ export function ProjectsForm({ data, onChange, onSave, onBack }: ProjectsFormPro
             Add Project
           </Button>
 
-          <div className="flex justify-between mt-6">
-            <Button type="button" variant="outline" onClick={onBack} className="border-green-500 text-green-700 hover:bg-green-50">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 mt-6">
+            <Button type="button" variant="outline" onClick={onBack} className="w-full sm:w-auto border-green-500 text-green-700 hover:bg-green-50">
               Back
             </Button>
-            <Button type="submit" className="bg-green-500 text-white hover:bg-green-600">
+            <Button type="submit" className="w-full sm:w-auto bg-green-500 text-white hover:bg-green-600 rounded-lg transition font-semibold">
               Save & Continue
             </Button>
           </div>

@@ -1,184 +1,142 @@
-import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/schema";
+import React from "react";
+import { Mail, Phone, MapPin, Linkedin, Github, Globe } from "lucide-react";
+import { formatExperienceDateRange } from '../resume-preview/resume-preview';
 
-// Register a monospace font for PDF
-Font.register({
-  family: "Courier New",
-  fonts: [
-    { src: "/fonts/Courier_New_Regular.ttf" }, // Assuming you have font files available
-    { src: "/fonts/Courier_New_Bold.ttf", fontWeight: 700 },
-  ],
-});
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    backgroundColor: '#111827', // Dark background
-    fontFamily: 'Courier New',
-    color: '#F9FAFB', // White/light text
-    padding: 40,
-  },
-  header: {
-    textAlign: 'center',
-    marginBottom: 30,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#374151', // Subtle divider
-  },
-  name: {
-    fontSize: 38,
-    fontWeight: 700,
-    marginBottom: 8,
-    color: '#60A5FA', // Blue accent
-  },
-  jobTitle: {
-    fontSize: 18,
-    color: '#D1D5DB',
-    marginBottom: 15,
-  },
-  contactInfo: {
-    fontSize: 11,
-    color: '#9CA3AF',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-  },
-  contactItem: {
-    marginHorizontal: 10,
-  },
-  section: {
-    marginBottom: 25,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#374151', // Subtle divider
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: 700,
-    color: '#34D399', // Green accent
-    marginBottom: 12,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
-  subheading: {
-    fontSize: 14,
-    fontWeight: 700,
-    color: '#E5E7EB',
-    marginBottom: 4,
-  },
-  text: {
-    fontSize: 11,
-    color: '#D1D5DB',
-    lineHeight: 1.5,
-    marginBottom: 4,
-  },
-  dateRange: {
-    fontSize: 10,
-    color: '#9CA3AF',
-    marginBottom: 4,
-  },
-  listItem: {
-    fontSize: 11,
-    color: '#D1D5DB',
-    marginBottom: 2,
-  },
-  link: {
-    color: '#60A5FA',
-    textDecoration: 'underline',
-    fontSize: 10,
-    marginRight: 10,
-  },
-});
-
-interface DarkThemePDFProps {
+interface DarkThemeTemplateProps {
   data: ResumeData;
 }
 
-export const DarkThemePDF = ({ data }: DarkThemePDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
+export function DarkThemeTemplate({ data }: DarkThemeTemplateProps) {
+  const sectionTitleStyles: React.CSSProperties = {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    color: '#34D399',
+    marginBottom: '16px',
+    paddingBottom: '8px',
+    borderBottom: '1px solid #374151',
+    letterSpacing: '1px'
+  };
+
+  return (
+    <div style={{ backgroundColor: '#111827', color: '#E5E7EB', padding: '40px', maxWidth: '210mm', minHeight: '297mm', margin: 'auto', fontFamily: 'Fira Code, Ubuntu Mono, monospace' }}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.name}>{data.firstName} {data.lastName}</Text>
-        {data.jobTitle && <Text style={styles.jobTitle}>{data.jobTitle}</Text>}
-        <View style={styles.contactInfo}>
-          {data.email && <Text style={styles.contactItem}>{data.email}</Text>}
-          {data.phone && <Text style={styles.contactItem}>{data.phone}</Text>}
-          {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
-          {data.linkedin && <Link src={data.linkedin} style={styles.contactItem}>LinkedIn</Link>}
-          {data.github && <Link src={data.github} style={styles.contactItem}>GitHub</Link>}
-        </View>
-      </View>
+      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ fontSize: '48px', fontWeight: 'bold', marginBottom: '8px', color: '#60A5FA' }}>{data.firstName} {data.lastName}</h1>
+        {data.jobTitle && <p style={{ fontSize: '20px', color: '#D1D5DB', marginBottom: '16px' }}>{data.jobTitle}</p>}
+        <p style={{ fontSize: '14px', color: '#9CA3AF', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '8px 24px' }}>
+          {data.email && <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Mail style={{ width: 14, height: 14 }} />{data.email}</span>}
+          {data.phone && <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Phone style={{ width: 14, height: 14 }} />{data.phone}</span>}
+          {data.location && <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><MapPin style={{ width: 14, height: 14 }} />{data.location}</span>}
+          {data.website && <a href={data.website} target="_blank" rel="noopener noreferrer" style={{ color: '#60A5FA', textDecoration: 'underline', display: 'flex', alignItems: 'center', gap: '6px' }}><Globe style={{ width: 14, height: 14 }} />Website</a>}
+          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#60A5FA', textDecoration: 'underline', display: 'flex', alignItems: 'center', gap: '6px' }}><Linkedin style={{ width: 14, height: 14 }} />LinkedIn</a>}
+          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" style={{ color: '#60A5FA', textDecoration: 'underline', display: 'flex', alignItems: 'center', gap: '6px' }}><Github style={{ width: 14, height: 14 }} />GitHub</a>}
+        </p>
+      </div>
 
-      {/* Summary */}
-      {data.summary && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>SUMMARY</Text>
-          <Text style={styles.text}>{data.summary}</Text>
-        </View>
-      )}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+        {data.summary && (
+          <div>
+            <h2 style={sectionTitleStyles}>SUMMARY</h2>
+            <p style={{ fontSize: '16px', lineHeight: 1.6, color: '#D1D5DB' }}>{data.summary}</p>
+          </div>
+        )}
 
-      {/* Experience */}
-      {data.experience && data.experience.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>EXPERIENCE</Text>
-          {data.experience.map((exp, i) => (
-            <View key={i} style={{ marginBottom: 15 }}>
-              <Text style={styles.subheading}>{exp.position} at {exp.company}</Text>
-              <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? 'Present' : exp.endDate}</Text>
-              {exp.description && <Text style={styles.text}>{exp.description}</Text>}
-            </View>
-          ))}
-        </View>
-      )}
+        {data.experience && data.experience.length > 0 && (
+          <div>
+            <h2 style={sectionTitleStyles}>EXPERIENCE</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {data.experience.map((exp, index) => (
+                <div key={index}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#F9FAFB' }}>{exp.position}</h3>
+                    <p style={{ fontSize: '14px', color: '#9CA3AF' }}>{formatExperienceDateRange(exp.startDate, exp.endDate, exp.current)}</p>
+                  </div>
+                  <p style={{ fontSize: '16px', color: '#6EE7B7', marginBottom: '8px' }}>{exp.company}</p>
+                  {exp.description && <p style={{ fontSize: '14px', color: '#D1D5DB', lineHeight: 1.5 }}>{exp.description}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-      {/* Education */}
-      {data.education && data.education.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>EDUCATION</Text>
-          {data.education.map((edu, i) => (
-            <View key={i} style={{ marginBottom: 15 }}>
-              <Text style={styles.subheading}>{edu.degree}, {edu.school}</Text>
-              <Text style={styles.dateRange}>{edu.startDate} - {edu.current ? 'Present' : edu.endDate}</Text>
-              {edu.description && <Text style={styles.text}>{edu.description}</Text>}
-            </View>
-          ))}
-        </View>
-      )}
+        {data.education && data.education.length > 0 && (
+          <div>
+            <h2 style={sectionTitleStyles}>EDUCATION</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {data.education.map((edu, index) => (
+                <div key={index}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#F9FAFB' }}>{edu.degree}</h3>
+                    <p style={{ fontSize: '14px', color: '#9CA3AF' }}>{formatExperienceDateRange(edu.startDate, edu.endDate, edu.current)}</p>
+                  </div>
+                  <p style={{ fontSize: '16px', color: '#6EE7B7', marginBottom: '8px' }}>{edu.school}</p>
+                  {edu.description && <p style={{ fontSize: '14px', color: '#D1D5DB' }}>{edu.description}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-      {/* Projects */}
-      {data.projects && data.projects.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>PROJECTS</Text>
-          {data.projects.map((project, i) => (
-            <View key={i} style={{ marginBottom: 15 }}>
-              <Text style={styles.subheading}>{project.name}</Text>
-              {project.description && <Text style={styles.text}>{project.description}</Text>}
-              <Text style={{ flexDirection: 'row', marginTop: 3 }}>
-                {project.liveUrl && <Link src={project.liveUrl} style={styles.link}>Live Demo</Link>}
-                {project.codeUrl && <Link src={project.codeUrl} style={styles.link}>Code</Link>}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
+        {data.projects && data.projects.length > 0 && (
+          <div>
+            <h2 style={sectionTitleStyles}>PROJECTS</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {data.projects.map((project, i) => (
+                <div key={i}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#F9FAFB' }}>{project.name}</h3>
+                  <p style={{ color: '#D1D5DB', fontSize: '14px', marginTop: '4px', lineHeight: 1.5 }}>{project.description}</p>
+                  {project.tags && project.tags.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+                      {project.tags.map((tag) => (
+                        <span key={tag} style={{ background: '#1F2937', color: '#6EE7B7', padding: '4px 10px', borderRadius: '4px', fontSize: '12px' }}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
+                    {project.codeUrl && (
+                      <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6EE7B7', fontSize: '14px', textDecoration: 'underline' }}>
+                        View Code
+                      </a>
+                    )}
+                    {project.liveUrl && (
+                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6EE7B7', fontSize: '14px', textDecoration: 'underline' }}>
+                        Live Demo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-      {/* Skills */}
-      {data.skills && data.skills.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>SKILLS</Text>
-          <Text style={styles.text}>{data.skills.map(skill => skill.name).join(', ')}</Text>
-        </View>
-      )}
+        {data.skills && data.skills.length > 0 && (
+          <div>
+            <h2 style={sectionTitleStyles}>SKILLS</h2>
+            <p style={{ fontSize: '16px', lineHeight: 1.6, color: '#D1D5DB' }}>{data.skills.map(skill => skill.name).join(' ・ ')}</p>
+          </div>
+        )}
 
-      {data.certifications && data.certifications.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
-          {data.certifications.map((cert, i) => (
-            <Text key={i} style={styles.listItem}>• {cert.name} ({cert.year})</Text>
-          ))}
-        </View>
-      )}
-    </Page>
-  </Document>
-); 
+        {data.certifications && data.certifications.length > 0 && (
+          <div>
+            <h2 style={sectionTitleStyles}>CERTIFICATIONS</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {data.certifications.map((cert, index) => (
+                <div key={index}>
+                  {cert.url ? (
+                    <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '16px', color: '#6EE7B7', textDecoration: 'underline' }}>{cert.name}</a>
+                  ) : (
+                    <span style={{ fontSize: '16px', color: '#F9FAFB' }}>{cert.name}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

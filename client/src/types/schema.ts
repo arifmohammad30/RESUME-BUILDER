@@ -47,7 +47,7 @@ export interface Project {
 export interface Certification {
   id: string;
   name: string;
-  year: string;
+  url?: string;
 }
 
 export interface ResumeData {

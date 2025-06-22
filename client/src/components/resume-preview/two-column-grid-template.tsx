@@ -7,63 +7,88 @@ interface TwoColumnGridTemplateProps {
 }
 
 export function TwoColumnGridTemplate({ data }: TwoColumnGridTemplateProps) {
+  const columnStyles: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '32px'
+  };
+
+  const sectionTitleStyles: React.CSSProperties = {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    color: '#1E40AF',
+    marginBottom: '16px',
+    paddingBottom: '8px',
+    borderBottom: '2px solid #BFDBFE'
+  };
+
   return (
-    <div className="font-['Segoe_UI',_sans-serif] text-gray-800 max-w-[210mm] mx-auto bg-white border border-gray-200 shadow-sm">
+    <div style={{ fontFamily: 'Segoe UI, sans-serif', color: '#1F2937', maxWidth: '210mm', minHeight: '297mm', margin: 'auto', background: '#F9FAFB' }}>
       {/* Header */}
-      <div className="text-center bg-gray-100 p-8 border-b border-gray-300">
-        <h1 className="text-4xl font-bold mb-2 text-gray-900">{data.firstName} {data.lastName}</h1>
-        {data.jobTitle && <p className="text-lg text-gray-700 mb-4">{data.jobTitle}</p>}
-        <p className="text-sm text-gray-600 flex justify-center flex-wrap gap-x-4">
+      <div style={{ textAlign: 'center', backgroundColor: '#E5E7EB', padding: '32px', borderBottom: '2px solid #D1D5DB' }}>
+        <h1 style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '8px', color: '#111827' }}>{data.firstName} {data.lastName}</h1>
+        {data.jobTitle && <p style={{ fontSize: '18px', color: '#4B5563', marginBottom: '16px' }}>{data.jobTitle}</p>}
+        <p style={{ fontSize: '14px', color: '#4B5563', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '8px 24px' }}>
           {data.email && <span>{data.email}</span>}
           {data.phone && <span>{data.phone}</span>}
           {data.location && <span>{data.location}</span>}
-          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">LinkedIn</a>}
-          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">GitHub</a>}
+          {data.website && <a href={data.website} target="_blank" rel="noopener noreferrer" style={{ color: '#1E40AF', textDecoration: 'underline' }}>Website</a>}
+          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#1E40AF', textDecoration: 'underline' }}>LinkedIn</a>}
+          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" style={{ color: '#1E40AF', textDecoration: 'underline' }}>GitHub</a>}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 divide-x divide-gray-300 p-8">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '32px' }}>
         {/* Left Column */}
-        <div className="pr-8">
+        <div style={{ ...columnStyles, paddingRight: '32px', borderRight: '1px solid #D1D5DB' }}>
+          {data.summary && (
+            <div>
+              <h2 style={sectionTitleStyles}>SUMMARY</h2>
+              <p style={{ fontSize: '16px', color: '#374151', lineHeight: 1.6 }}>{data.summary}</p>
+            </div>
+          )}
+
           {data.experience && data.experience.length > 0 && (
-            <div className="mb-8 last:mb-0">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b-2 border-blue-200">EXPERIENCE</h2>
-              {data.experience.map((exp, index) => (
-                <div key={index} className="mb-6 last:mb-0">
-                  <h3 className="text-lg font-semibold text-gray-900">{exp.position}</h3>
-                  <div className="text-blue-700 text-base">{exp.company}</div>
-                  <div className="text-gray-500 text-xs mb-1">{formatExperienceDateRange(exp.startDate, exp.endDate, exp.current)}</div>
-                  {exp.description && <ul className="list-disc list-inside text-sm text-gray-700 mt-1"><li>{exp.description}</li></ul>}
-                </div>
-              ))}
+            <div>
+              <h2 style={sectionTitleStyles}>EXPERIENCE</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {data.experience.map((exp, index) => (
+                  <div key={index}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#111827' }}>{exp.position}</h3>
+                    <p style={{ fontSize: '16px', color: '#1E40AF' }}>{exp.company}</p>
+                    <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: '4px' }}>{formatExperienceDateRange(exp.startDate, exp.endDate, exp.current)}</p>
+                    {exp.description && <p style={{ fontSize: '14px', color: '#374151', lineHeight: 1.5 }}>{exp.description}</p>}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           {data.projects && data.projects.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Projects</h2>
-              <div className="space-y-6">
+            <div>
+              <h2 style={sectionTitleStyles}>PROJECTS</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {data.projects.map((project, i) => (
-                  <div key={i} className="bg-white p-4 rounded-lg shadow-sm">
-                    <h3 className="font-semibold text-gray-900">{project.name}</h3>
-                    <p className="text-gray-600 text-sm mt-1">{project.description}</p>
+                  <div key={i}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#111827' }}>{project.name}</h3>
+                    <p style={{ color: '#374151', fontSize: '14px', marginTop: '4px', lineHeight: 1.5 }}>{project.description}</p>
                     {project.tags && project.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
                         {project.tags.map((tag) => (
-                          <span key={tag} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
+                          <span key={tag} style={{ background: '#EBF4FF', color: '#1E40AF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px' }}>
                             {tag}
                           </span>
                         ))}
                       </div>
                     )}
-                    <div className="flex gap-4 mt-3">
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
                       {project.codeUrl && (
-                        <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-sm hover:underline">
+                        <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#1E40AF', fontSize: '14px', textDecoration: 'underline' }}>
                           View Code
                         </a>
                       )}
                       {project.liveUrl && (
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 text-sm hover:underline">
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#1E40AF', fontSize: '14px', textDecoration: 'underline' }}>
                           Live Demo
                         </a>
                       )}
@@ -76,25 +101,27 @@ export function TwoColumnGridTemplate({ data }: TwoColumnGridTemplateProps) {
         </div>
 
         {/* Right Column */}
-        <div className="pl-8">
+        <div style={columnStyles}>
           {data.education && data.education.length > 0 && (
-            <div className="mb-8 last:mb-0">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b-2 border-blue-200">EDUCATION</h2>
-              {data.education.map((edu, index) => (
-                <div key={index} className="mb-6 last:mb-0">
-                  <h3 className="text-lg font-semibold text-gray-900">{edu.degree}</h3>
-                  <div className="text-blue-700 text-base">{edu.school}</div>
-                  <div className="text-gray-500 text-xs mb-1">{formatExperienceDateRange(edu.startDate, edu.endDate, edu.current)}</div>
-                  {edu.description && <p className="text-sm text-gray-700 mt-1">{edu.description}</p>}
-                </div>
-              ))}
+            <div>
+              <h2 style={sectionTitleStyles}>EDUCATION</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {data.education.map((edu, index) => (
+                  <div key={index}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#111827' }}>{edu.degree}</h3>
+                    <p style={{ fontSize: '16px', color: '#1E40AF' }}>{edu.school}</p>
+                    <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: '4px' }}>{formatExperienceDateRange(edu.startDate, edu.endDate, edu.current)}</p>
+                    {edu.description && <p style={{ fontSize: '14px', color: '#374151', marginTop: '4px' }}>{edu.description}</p>}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           {data.skills && data.skills.length > 0 && (
-            <div className="mb-8 last:mb-0">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b-2 border-blue-200">SKILLS</h2>
-              <ul className="list-disc list-inside text-base text-gray-700 space-y-1">
+            <div>
+              <h2 style={sectionTitleStyles}>SKILLS</h2>
+              <ul style={{ listStyleType: 'disc', listStylePosition: 'inside', color: '#374151', fontSize: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {data.skills.map((skill, index) => (
                   <li key={index}>{skill.name}</li>
                 ))}
@@ -103,25 +130,23 @@ export function TwoColumnGridTemplate({ data }: TwoColumnGridTemplateProps) {
           )}
 
           {data.certifications && data.certifications.length > 0 && (
-            <div className="mb-8 last:mb-0">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b-2 border-blue-200">CERTIFICATIONS</h2>
-              {data.certifications.map((cert, index) => (
-                <div key={index} className="mb-2 last:mb-0">
-                  <p className="text-base text-gray-700">{cert.name} ({cert.year})</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Summary can be placed here if it's optional and fits */}
-          {data.summary && (
-            <div className="mb-8 last:mb-0">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b-2 border-blue-200">SUMMARY</h2>
-              <p className="text-base text-gray-700 leading-relaxed">{data.summary}</p>
+            <div>
+              <h2 style={sectionTitleStyles}>CERTIFICATIONS</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {data.certifications.map((cert, index) => (
+                  <div key={index}>
+                    {cert.url ? (
+                      <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '16px', color: '#1E40AF', textDecoration: 'underline' }}>{cert.name}</a>
+                    ) : (
+                      <span style={{ fontSize: '16px', color: '#111827' }}>{cert.name}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
       </div>
     </div>
   );
-} 
+}

@@ -79,6 +79,26 @@ export function ModernTemplate({ data }: ModernTemplateProps) {
               </div>
             </div>
           )}
+
+          {/* Certifications Section */}
+          {data.certifications && data.certifications.length > 0 && (
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Certifications</h2>
+              <div className="space-y-3">
+                {data.certifications.map((cert) => (
+                  <div key={cert.id} className="text-sm">
+                    {cert.url ? (
+                      <a href={cert.url} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                        {cert.name}
+                      </a>
+                    ) : (
+                      <span>{cert.name}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         
         {/* Right Column - Main Content */}

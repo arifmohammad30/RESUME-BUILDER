@@ -97,10 +97,10 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-8 py-6 sm:py-8 md:py-10 space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
       <div>
-        <h2 className="text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Skills</h2>
-        <p className="text-gray-600">List your relevant skills.</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Skills</h2>
+        <p className="text-gray-600 text-sm sm:text-base">List your relevant skills.</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -108,7 +108,7 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
             <FormItem>
               <FormLabel><BadgeCheck className="inline w-4 h-4 mr-1 text-green-600" />Add a new skill</FormLabel>
               <FormControl>
-                <div className="flex space-x-2">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                   <Input
                     placeholder="e.g., JavaScript, Project Management"
                     value={newSkillName}
@@ -123,7 +123,7 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
                   <Button 
                     type="button" 
                     onClick={handleAdd} 
-                    className="bg-green-500 text-white hover:bg-green-600"
+                    className="w-full sm:w-auto bg-green-500 text-white hover:bg-green-600 rounded-lg transition font-semibold"
                     disabled={!newSkillName.trim()}
                   >
                     <PlusCircle className="w-4 h-4 mr-2" /> Add
@@ -134,7 +134,7 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
           </div>
 
           {fields.length > 0 && (
-            <div className="space-y-4 rounded-lg border p-4 bg-gray-50">
+            <div className="space-y-4 rounded-xl border p-4 bg-gray-50">
               <h3 className="text-lg font-semibold text-gray-800">Your Skills</h3>
               <div className="flex flex-wrap gap-2">
                 {fields.map((skill, index) => (
@@ -155,13 +155,13 @@ export function SkillsForm({ data, onChange, onSave, onBack }: SkillsFormProps) 
             </div>
           )}
 
-          <div className="flex justify-between mt-6">
-            <Button type="button" variant="outline" onClick={onBack} className="border-green-500 text-green-700 hover:bg-green-50">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 mt-6">
+            <Button type="button" variant="outline" onClick={onBack} className="w-full sm:w-auto border-green-500 text-green-700 hover:bg-green-50">
               Back
             </Button>
             <Button 
               type="submit" 
-              className="bg-green-500 text-white hover:bg-green-600"
+              className="w-full sm:w-auto bg-green-500 text-white hover:bg-green-600 rounded-lg transition font-semibold"
               disabled={fields.length === 0}
             >
               Save & Continue

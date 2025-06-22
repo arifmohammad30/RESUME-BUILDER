@@ -54,7 +54,7 @@ export function CreativeTemplate({ data }: CreativeTemplateProps) {
     <div 
       id="resume-template"
       className="bg-gray-50 border border-gray-200 shadow-xl rounded-lg overflow-hidden mx-auto print:shadow-none print:rounded-none"
-      style={{ maxWidth: '210mm', minHeight: '1120px', margin: 'auto', fontFamily: 'Inter, Arial, sans-serif' }}
+      style={{ maxWidth: '210mm', minHeight: '297mm', margin: 'auto', fontFamily: 'Inter, Arial, sans-serif' }}
     >
       <div className="relative">
         {/* Decorative header with geometric shapes */}

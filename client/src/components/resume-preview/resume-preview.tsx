@@ -1,9 +1,9 @@
 import { ResumeData } from "@/types/schema";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { ZoomIn, ZoomOut, Palette, X, Download } from "lucide-react";
+import { Palette, X, Download, Loader2, ZoomIn, ZoomOut, Pencil } from "lucide-react";
 import { generatePDF, TemplateType } from "@/lib/pdf-generator";
 import { ClassicProfessionalTemplate } from "@/components/resume-preview/classic-professional-template";
 import { ModernBlueTemplate } from "@/components/resume-preview/modern-blue-template";
@@ -17,41 +17,46 @@ import { ElegantSerifTemplate } from "@/components/resume-preview/elegant-serif-
 import { SidebarHighlightTemplate } from "@/components/resume-preview/sidebar-highlight-template";
 import { TwoColumnGridTemplate } from "@/components/resume-preview/two-column-grid-template";
 import { DarkThemeTemplate } from "@/components/resume-preview/dark-theme-template";
-
-const templates: { id: TemplateType; name: string }[] = [
-  { id: "classic-professional", name: "Classic Professional" },
-  { id: "modern-blue", name: "Modern Blue" },
-  { id: "minimalist", name: "Minimalist" },
-  { id: "creative-gradient", name: "Creative Gradient" },
-  { id: "elegant-bw", name: "Elegant Black & White" },
-  { id: "tech-startup", name: "Tech Startup" },
-  { id: "modern-sidebar", name: "Modern Sidebar" },
-  { id: "minimal-classic", name: "Minimal Classic (ATS-Friendly)" },
-  { id: "elegant-serif", name: "Elegant Serif (For Senior Roles / Creative Jobs)" },
-  { id: "sidebar-highlight", name: "Sidebar Highlight (Creative + Compact)" },
-  { id: "two-column-grid", name: "Two-Column Grid (Modern Corporate)" },
-  { id: "dark-theme", name: "Dark Theme (Modern, Standout)" },
-];
+import { TemplateSelector } from "../template-selector";
 
 interface ResumePreviewProps {
   data: ResumeData;
-  zoomLevel?: number;
   template: TemplateType;
-  onDownload: () => void;
   onTemplateChange?: (template: TemplateType) => void;
   className?: string;
+  isLoading?: boolean;
+  onEdit?: () => void;
 }
 
-export function ResumePreview({ data, zoomLevel = 100, template, onDownload, onTemplateChange, className }: ResumePreviewProps) {
+export function ResumePreview({ data, template, onTemplateChange, className, isLoading, onEdit }: ResumePreviewProps) {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [scale, setScale] = useState(1);
+  const [baseScale, setBaseScale] = useState(1);
 
-  const handleDownload = async () => {
-    try {
-      await generatePDF(data, template);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      alert("Failed to generate PDF. Please try again.");
+  useEffect(() => {
+    const updateScale = () => {
+      const width = window.innerWidth;
+      const a4WidthPx = 210 * 3.78;
+      // Default scale is 0.8 for all devices
+      let newBaseScale = 0.8;
+      if (width < a4WidthPx * 0.8 + 40) {
+        newBaseScale = (width - 40) / a4WidthPx;
+      }
+      setBaseScale(newBaseScale);
+      setScale(newBaseScale);
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
+  const handleZoom = (direction: 'in' | 'out') => {
+    if (direction === 'in') {
+      setScale(s => Math.min(s * 1.2, 2)); // Zoom in by 20%, max 200%
+    } else {
+      // Zoom out by 20%, but don't go smaller than the base scale
+      setScale(s => Math.max(s / 1.2, baseScale));
     }
   };
 
@@ -86,76 +91,129 @@ export function ResumePreview({ data, zoomLevel = 100, template, onDownload, onT
   };
 
   return (
-    <div className={cn("space-y-4", className)}>
-      {/* Resume Preview */}
-      <div className="relative w-full rounded-lg p-4 bg-gray-100">
-        <div
-          ref={resumeRef}
-          className="mx-auto bg-white shadow-lg"
-          style={{
+    <div className={cn("relative w-full min-h-screen flex flex-col items-center p-2 sm:p-4 overflow-hidden", className)} style={{ background: '#f8fafc' }}>
+      {/* Unified Header with Controls */}
+      <div className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 mt-2 p-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-100">
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-green-700" style={{ fontFamily: 'Roboto Slab, Inter, Arial, sans-serif' }}>Preview & Download</h2>
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg shadow-sm border-green-300 text-green-700 hover:bg-green-50"
+            onClick={() => setIsTemplateModalOpen(true)}
+            title="Change Template"
+          >
+            <Palette className="w-5 h-5 text-green-600" />
+            Templates
+          </Button>
+        </div>
+        
+        <div className="flex flex-row gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="w-10 h-10 bg-white/90 backdrop-blur-sm shadow-md rounded-full p-0"
+            onClick={() => handleZoom('in')}
+            title="Zoom In"
+          >
+            <ZoomIn className="w-5 h-5" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="w-10 h-10 bg-white/90 backdrop-blur-sm shadow-md rounded-full p-0"
+            onClick={() => handleZoom('out')}
+            title="Zoom Out"
+          >
+            <ZoomOut className="w-5 h-5" />
+          </Button>
+          {onEdit && (
+            <Button
+              variant="outline"
+              size="icon"
+              className="w-10 h-10 bg-white/90 backdrop-blur-sm shadow-md rounded-full p-0"
+              onClick={onEdit}
+              title="Edit Resume"
+            >
+              <Pencil className="w-5 h-5 text-green-700" />
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="icon"
+            className="bg-white/90 backdrop-blur-sm shadow-md rounded-full"
+            onClick={async () => await generatePDF(data, template)}
+            title="Download PDF"
+          >
+            <Download className="w-5 h-5 text-green-700" />
+          </Button>
+        </div>
+      </div>
+
+      <div 
+        className="flex-1 w-full flex items-center justify-center overflow-auto"
+        ref={resumeRef}
+        data-resume-preview
+        style={{ minHeight: '100vh' }}
+      >
+        {/* A4 Page Container */}
+        <div 
+          className="bg-white shadow-lg mx-auto"
+          style={{ 
             width: '210mm',
+            height: '297mm',
+            minWidth: '210mm',
             minHeight: '297mm',
-            transform: `scale(${zoomLevel / 100})`,
-            transformOrigin: 'top center',
-            transition: 'transform 0.2s ease-in-out',
-            overflow: 'hidden',
+            maxWidth: '210mm',
+            maxHeight: '297mm',
+            transform: `scale(${scale})`,
+            transformOrigin: 'center top',
+            transition: 'transform 0.2s ease-out',
+            willChange: 'transform',
+            boxSizing: 'content-box',
+            margin: '0 auto',
+            display: 'block',
           }}
         >
           {renderTemplate()}
         </div>
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-30 rounded-2xl">
+            <Loader2 className="w-10 h-10 text-green-500 animate-spin" />
+          </div>
+        )}
       </div>
 
-      {/* Template Modal */}
       {isTemplateModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96 max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Choose a Template</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsTemplateModalOpen(false)}
-                className="text-[#4B5563] hover:bg-[#E5E7EB]"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {templates.map((t) => (
-                <Card
-                  key={t.id}
-                  className={cn(
-                    "p-4 cursor-pointer hover:bg-gray-100",
-                    template === t.id ? "border-2 border-green-500" : ""
-                  )}
-                  onClick={() => {
-                    onTemplateChange?.(t.id);
-                    setIsTemplateModalOpen(false);
-                  }}
-                >
-                  <div className="font-medium">{t.name}</div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
+        <TemplateSelector
+          selectedTemplate={template}
+          onSelectTemplate={(t) => {
+            if (onTemplateChange) onTemplateChange(t);
+            setIsTemplateModalOpen(false);
+          }}
+          onClose={() => setIsTemplateModalOpen(false)}
+        />
       )}
     </div>
   );
 }
 
-// Utility: Format 'YYYY-MM' or 'YYYY-MM-DD' to 'MMM YYYY'
 export function formatMonthYear(dateStr?: string): string {
   if (!dateStr) return '';
-  const [year, month] = dateStr.split('-');
-  if (!year || !month) return dateStr;
-  const date = new Date(Number(year), Number(month) - 1);
-  return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  } catch {
+    return dateStr;
+  }
 }
 
-// Utility: Format date range for experience
 export function formatExperienceDateRange(start?: string, end?: string, current?: boolean): string {
-  const startFmt = formatMonthYear(start);
-  const endFmt = current ? 'Present' : formatMonthYear(end);
-  return startFmt + (endFmt ? ` - ${endFmt}` : '');
+  const startFormatted = formatMonthYear(start);
+  const endFormatted = current ? 'Present' : formatMonthYear(end);
+  
+  if (!startFormatted) return '';
+  if (!endFormatted) return startFormatted;
+  
+  return `${startFormatted} - ${endFormatted}`;
 }

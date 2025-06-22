@@ -1,104 +1,131 @@
-import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/schema";
-
-// Register Helvetica as a sans-serif font for PDF
-Font.register({
-  family: "Helvetica",
-  fonts: [
-    { src: "/fonts/Helvetica.ttf" }, // Assuming Helvetica.ttf is available or a common alternative
-    { src: "/fonts/Helvetica-Bold.ttf", fontWeight: 700 },
-  ],
-});
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#fff',
     fontFamily: 'Helvetica',
-    padding: 30,
+    padding: 32,
+    color: '#1F2937',
+    minHeight: '100%',
   },
   header: {
     textAlign: 'center',
-    marginBottom: 20,
-    backgroundColor: '#F0F4F8', // Light gray background for header
-    paddingVertical: 15,
-    borderBottom: '1px solid #D9E2EC',
+    marginBottom: 32,
+    backgroundColor: '#F3F4F6',
+    paddingVertical: 32,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D1D5DB',
   },
   name: {
-    fontSize: 28,
-    fontWeight: 700,
-    color: '#2C3E50', // Dark corporate blue/gray
-    marginBottom: 5,
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#111827',
+    marginBottom: 8,
   },
   jobTitle: {
-    fontSize: 16,
-    color: '#34495E',
-    marginBottom: 10,
+    fontSize: 18,
+    color: '#374151',
+    marginBottom: 16,
   },
   contactInfo: {
-    fontSize: 10,
-    color: '#5F7285',
+    fontSize: 12,
+    color: '#6B7280',
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    gap: 16,
   },
   contactItem: {
-    marginHorizontal: 5,
+    marginHorizontal: 8,
   },
   mainContent: {
     flexDirection: 'row',
     flexGrow: 1,
-    borderTop: '1px solid #D9E2EC',
-    paddingTop: 20,
+    gap: 32,
   },
   leftColumn: {
     flex: 1,
-    paddingRight: 20,
-    borderRight: '1px solid #D9E2EC',
   },
   rightColumn: {
     flex: 1,
-    paddingLeft: 20,
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 32,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: 700,
-    color: '#2C3E50',
-    marginBottom: 10,
-    borderBottom: '1px solid #AAB8C6',
-    paddingBottom: 5,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1D4ED8',
+    marginBottom: 16,
+    borderBottomWidth: 2,
+    borderBottomColor: '#DBEAFE',
+    paddingBottom: 8,
     textTransform: 'uppercase',
   },
   subheading: {
-    fontSize: 12,
-    fontWeight: 700,
-    color: '#34495E',
-    marginBottom: 2,
+    fontSize: 16,
+    fontWeight: 600,
+    color: '#111827',
+    marginBottom: 4,
+  },
+  company: {
+    fontSize: 14,
+    color: '#1D4ED8',
+    marginBottom: 4,
   },
   text: {
-    fontSize: 10,
-    color: '#5F7285',
-    lineHeight: 1.4,
-    marginBottom: 2,
+    fontSize: 12,
+    color: '#374151',
+    lineHeight: 1.5,
+    marginBottom: 4,
   },
   dateRange: {
-    fontSize: 9,
-    color: '#777',
+    fontSize: 10,
+    color: '#6B7280',
     marginBottom: 4,
   },
   listItem: {
-    fontSize: 10,
-    color: '#5F7285',
+    fontSize: 12,
+    color: '#374151',
     marginBottom: 2,
   },
   link: {
-    color: '#3498DB',
-    textDecoration: 'underline',
-    fontSize: 9,
-    marginRight: 8,
+    color: '#2563EB',
+    textDecoration: 'none',
+    fontSize: 12,
+    marginRight: 16,
+  },
+  projectCard: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  projectTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 8,
+  },
+  tag: {
+    backgroundColor: '#F3F4F6',
+    color: '#374151',
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    fontSize: 10,
+  },
+  projectLinks: {
+    flexDirection: 'row',
+    gap: 16,
+    marginTop: 12,
+  },
+  lastSection: {
+    marginBottom: 0,
   },
 });
 
@@ -117,6 +144,7 @@ export const TwoColumnGridPDF = ({ data }: TwoColumnGridPDFProps) => (
           {data.email && <Text style={styles.contactItem}>{data.email}</Text>}
           {data.phone && <Text style={styles.contactItem}>{data.phone}</Text>}
           {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
+          {data.website && <Link src={data.website} style={styles.contactItem}>Website</Link>}
           {data.linkedin && <Link src={data.linkedin} style={styles.contactItem}>LinkedIn</Link>}
           {data.github && <Link src={data.github} style={styles.contactItem}>GitHub</Link>}
         </View>
@@ -124,14 +152,22 @@ export const TwoColumnGridPDF = ({ data }: TwoColumnGridPDFProps) => (
 
       {/* Main Content */}
       <View style={styles.mainContent}>
-        {/* Left Column: Experience, Projects */}
+        {/* Left Column: Summary, Experience, Projects */}
         <View style={styles.leftColumn}>
+          {data.summary && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>SUMMARY</Text>
+              <Text style={styles.text}>{data.summary}</Text>
+            </View>
+          )}
+
           {data.experience && data.experience.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>EXPERIENCE</Text>
               {data.experience.map((exp, i) => (
-                <View key={i} style={{ marginBottom: 15 }}>
-                  <Text style={styles.subheading}>{exp.position} at {exp.company}</Text>
+                <View key={i} style={{ marginBottom: 24 }}>
+                  <Text style={styles.subheading}>{exp.position}</Text>
+                  <Text style={styles.company}>{exp.company}</Text>
                   <Text style={styles.dateRange}>{exp.startDate} - {exp.current ? 'Present' : exp.endDate}</Text>
                   {exp.description && <Text style={styles.text}>{exp.description}</Text>}
                 </View>
@@ -143,27 +179,35 @@ export const TwoColumnGridPDF = ({ data }: TwoColumnGridPDFProps) => (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>PROJECTS</Text>
               {data.projects.map((project, i) => (
-                <View key={i} style={{ marginBottom: 15 }}>
+                <View key={i} style={styles.projectCard}>
                   <Text style={styles.subheading}>{project.name}</Text>
                   {project.description && <Text style={styles.text}>{project.description}</Text>}
-                  <Text style={{ flexDirection: 'row', marginTop: 3 }}>
+                  {project.tags && project.tags.length > 0 && (
+                    <View style={styles.projectTags}>
+                      {project.tags.map((tag, tagIndex) => (
+                        <Text key={tagIndex} style={styles.tag}>{tag}</Text>
+                      ))}
+                    </View>
+                  )}
+                  <View style={styles.projectLinks}>
+                    {project.codeUrl && <Link src={project.codeUrl} style={styles.link}>View Code</Link>}
                     {project.liveUrl && <Link src={project.liveUrl} style={styles.link}>Live Demo</Link>}
-                    {project.codeUrl && <Link src={project.codeUrl} style={styles.link}>Code</Link>}
-                  </Text>
+                  </View>
                 </View>
               ))}
             </View>
           )}
         </View>
 
-        {/* Right Column: Education, Skills, Certifications, Summary (optional) */}
+        {/* Right Column: Education, Skills, Certifications */}
         <View style={styles.rightColumn}>
           {data.education && data.education.length > 0 && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>EDUCATION</Text>
               {data.education.map((edu, i) => (
-                <View key={i} style={{ marginBottom: 15 }}>
-                  <Text style={styles.subheading}>{edu.degree}, {edu.school}</Text>
+                <View key={i} style={{ marginBottom: 24 }}>
+                  <Text style={styles.subheading}>{edu.degree}</Text>
+                  <Text style={styles.company}>{edu.school}</Text>
                   <Text style={styles.dateRange}>{edu.startDate} - {edu.current ? 'Present' : edu.endDate}</Text>
                   {edu.description && <Text style={styles.text}>{edu.description}</Text>}
                 </View>
@@ -181,18 +225,15 @@ export const TwoColumnGridPDF = ({ data }: TwoColumnGridPDFProps) => (
           )}
 
           {data.certifications && data.certifications.length > 0 && (
-            <View style={styles.section}>
+            <View style={[styles.section, styles.lastSection]}>
               <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
               {data.certifications.map((cert, i) => (
-                <Text key={i} style={styles.listItem}>• {cert.name} ({cert.year})</Text>
+                cert.url ? (
+                  <Link key={i} src={cert.url} style={styles.listItem}>• {cert.name}</Link>
+                ) : (
+                  <Text key={i} style={styles.listItem}>• {cert.name}</Text>
+                )
               ))}
-            </View>
-          )}
-
-          {data.summary && (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>SUMMARY</Text>
-              <Text style={styles.text}>{data.summary}</Text>
             </View>
           )}
         </View>

@@ -1,148 +1,183 @@
-import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/schema";
-
-// Register fonts
-Font.register({
-  family: "Inter",
-  fonts: [
-    { src: "/fonts/Inter-Regular.ttf" },
-    { src: "/fonts/Inter-Medium.ttf", fontWeight: 500 },
-    { src: "/fonts/Inter-SemiBold.ttf", fontWeight: 600 },
-    { src: "/fonts/Inter-Bold.ttf", fontWeight: 700 },
-  ],
-});
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "row",
-    fontFamily: "Inter",
+    flexDirection: 'row',
+    backgroundColor: '#F0FDFA',
+    fontFamily: "Helvetica",
+    color: '#222',
   },
   sidebar: {
-    width: "30%",
-    backgroundColor: "#18181B",
-    padding: 20,
+    width: 200,
+    backgroundColor: "#14B8A6",
+    padding: 32,
     color: "#FFFFFF",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   main: {
-    width: "70%",
-    padding: 20,
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    padding: 40,
   },
   name: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 700,
     marginBottom: 8,
     color: "#FFFFFF",
+    textAlign: 'center',
+  },
+  jobTitle: {
+    fontSize: 13,
+    color: "#FFFFFF",
+    marginBottom: 24,
+    textAlign: 'center',
   },
   contact: {
-    fontSize: 10,
-    color: "#A1A1AA",
-    marginBottom: 4,
+    fontSize: 13,
+    color: "#FFFFFF",
+    marginBottom: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  contactLink: {
+    fontSize: 13,
+    color: "#FFFFFF",
+    marginBottom: 8,
+    textDecoration: 'underline',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#FFFFFF",
+    opacity: 0.25,
+    width: '100%',
+    marginVertical: 24,
   },
   section: {
-    marginBottom: 20,
-  },
-  sidebarSection: {
-    marginBottom: 20,
+    marginBottom: 32,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: 600,
-    marginBottom: 12,
-    color: "#18181B",
-    borderBottom: "2px solid #E4E4E7",
-    paddingBottom: 4,
+    fontSize: 18,
+    fontWeight: 700,
+    marginBottom: 8,
+    color: "#14B8A6",
   },
   sidebarSectionTitle: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 600,
-    marginBottom: 12,
+    marginBottom: 8,
     color: "#FFFFFF",
-    borderBottom: "2px solid #3F3F46",
-    paddingBottom: 4,
   },
   summary: {
-    fontSize: 10,
+    fontSize: 15,
     lineHeight: 1.6,
-    color: "#3F3F46",
+    color: "#374151",
   },
   experience: {
     marginBottom: 16,
   },
-  experienceHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  position: {
+    fontSize: 15,
+    fontWeight: 600,
+    color: "#374151",
     marginBottom: 4,
   },
   company: {
-    fontSize: 11,
-    fontWeight: 600,
-    color: "#18181B",
+    fontSize: 13,
+    color: "#14B8A6",
+    marginBottom: 4,
   },
   date: {
-    fontSize: 10,
-    color: "#71717A",
-  },
-  position: {
-    fontSize: 10,
-    color: "#3F3F46",
+    fontSize: 13,
+    color: "#6B7280",
     marginBottom: 4,
   },
   description: {
-    fontSize: 10,
-    color: "#3F3F46",
+    fontSize: 14,
+    color: "#374151",
     lineHeight: 1.5,
   },
   education: {
     marginBottom: 16,
   },
-  educationHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  degree: {
+    fontSize: 15,
+    fontWeight: 600,
+    color: "#374151",
     marginBottom: 4,
   },
   school: {
-    fontSize: 11,
-    fontWeight: 600,
-    color: "#18181B",
-  },
-  degree: {
-    fontSize: 10,
-    color: "#3F3F46",
+    fontSize: 13,
+    color: "#14B8A6",
+    marginBottom: 4,
   },
   skills: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
   },
   skill: {
-    fontSize: 10,
-    backgroundColor: "#3F3F46",
+    fontSize: 12,
+    backgroundColor: "#FFFFFF",
     color: "#FFFFFF",
-    padding: "4 12",
-    borderRadius: 4,
+    padding: "2 10",
+    borderRadius: 8,
+    opacity: 0.8,
   },
   projects: {
     marginBottom: 16,
   },
-  projectHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  projectTitle: {
+    fontSize: 15,
+    fontWeight: 600,
+    color: "#374151",
     marginBottom: 4,
   },
-  projectTitle: {
-    fontSize: 11,
-    fontWeight: 600,
-    color: "#18181B",
-  },
   projectDescription: {
-    fontSize: 10,
-    color: "#3F3F46",
+    fontSize: 14,
+    color: "#374151",
     lineHeight: 1.5,
+    marginBottom: 8,
   },
-  link: {
-    fontSize: 10,
-    color: "#18181B",
-    marginLeft: 8,
+  projectTags: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 8,
+  },
+  projectTag: {
+    fontSize: 12,
+    backgroundColor: "#F0FDFA",
+    color: "#14B8A6",
+    padding: "2 10",
+    borderRadius: 8,
+  },
+  projectLinks: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16,
+  },
+  projectLink: {
+    fontSize: 13,
+    color: "#14B8A6",
+    textDecoration: 'none',
+  },
+  certifications: {
+    marginBottom: 16,
+  },
+  certification: {
+    fontSize: 14,
+    color: "#374151",
+    marginBottom: 4,
+  },
+  certificationYear: {
+    fontSize: 13,
+    color: "#6B7280",
   },
 });
 
@@ -156,13 +191,22 @@ export const ModernSidebarPDF = ({ data }: ModernSidebarPDFProps) => (
       {/* Sidebar */}
       <View style={styles.sidebar}>
         <Text style={styles.name}>{`${data.firstName} ${data.lastName}`}</Text>
-        <Text style={styles.contact}>{data.email}</Text>
-        {data.phone && <Text style={styles.contact}>{data.phone}</Text>}
+        {data.jobTitle && <Text style={styles.jobTitle}>{data.jobTitle}</Text>}
         {data.location && <Text style={styles.contact}>{data.location}</Text>}
+        
+        <View style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24, width: '100%' }}>
+          {data.email && <Text style={styles.contact}>{data.email}</Text>}
+          {data.phone && <Text style={styles.contact}>{data.phone}</Text>}
+          {data.website && <Link src={data.website} style={styles.contactLink}>Website</Link>}
+          {data.linkedin && <Link src={data.linkedin} style={styles.contactLink}>LinkedIn</Link>}
+          {data.github && <Link src={data.github} style={styles.contactLink}>GitHub</Link>}
+        </View>
+
+        <View style={styles.divider} />
 
         {/* Skills in Sidebar */}
         {data.skills && data.skills.length > 0 && (
-          <View style={styles.sidebarSection}>
+          <View style={{ width: '100%' }}>
             <Text style={styles.sidebarSectionTitle}>Skills</Text>
             <View style={styles.skills}>
               {data.skills.map((skill, index) => (
@@ -180,7 +224,7 @@ export const ModernSidebarPDF = ({ data }: ModernSidebarPDFProps) => (
         {/* Summary */}
         {data.summary && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
+            <Text style={styles.sectionTitle}>Profile</Text>
             <Text style={styles.summary}>{data.summary}</Text>
           </View>
         )}
@@ -191,11 +235,9 @@ export const ModernSidebarPDF = ({ data }: ModernSidebarPDFProps) => (
             <Text style={styles.sectionTitle}>Experience</Text>
             {data.experience.map((exp, index) => (
               <View key={index} style={styles.experience}>
-                <View style={styles.experienceHeader}>
-                  <Text style={styles.company}>{exp.company}</Text>
-                  <Text style={styles.date}>{`${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`}</Text>
-                </View>
                 <Text style={styles.position}>{exp.position}</Text>
+                <Text style={styles.company}>{exp.company}</Text>
+                <Text style={styles.date}>{`${exp.startDate} - ${exp.current ? "Present" : exp.endDate}`}</Text>
                 <Text style={styles.description}>{exp.description}</Text>
               </View>
             ))}
@@ -208,11 +250,8 @@ export const ModernSidebarPDF = ({ data }: ModernSidebarPDFProps) => (
             <Text style={styles.sectionTitle}>Education</Text>
             {data.education.map((edu, index) => (
               <View key={index} style={styles.education}>
-                <View style={styles.educationHeader}>
-                  <Text style={styles.school}>{edu.school}</Text>
-                  <Text style={styles.date}>{`${edu.startDate} - ${edu.current ? "Present" : edu.endDate}`}</Text>
-                </View>
                 <Text style={styles.degree}>{edu.degree}</Text>
+                <Text style={styles.school}>{`${edu.school} | ${edu.startDate} - ${edu.current ? "Present" : edu.endDate}`}</Text>
                 {edu.description && <Text style={styles.description}>{edu.description}</Text>}
               </View>
             ))}
@@ -225,14 +264,37 @@ export const ModernSidebarPDF = ({ data }: ModernSidebarPDFProps) => (
             <Text style={styles.sectionTitle}>Projects</Text>
             {data.projects.map((project, index) => (
               <View key={index} style={styles.projects}>
-                <View style={styles.projectHeader}>
-                  <Text style={styles.projectTitle}>{project.name}</Text>
+                <Text style={styles.projectTitle}>{project.name}</Text>
+                <Text style={styles.projectDescription}>{project.description}</Text>
+                {project.tags && project.tags.length > 0 && (
+                  <View style={styles.projectTags}>
+                    {project.tags.map((tag, tagIndex) => (
+                      <Text key={tagIndex} style={styles.projectTag}>
+                        {tag}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+                <View style={styles.projectLinks}>
+                  {project.codeUrl && <Link src={project.codeUrl} style={styles.projectLink}>View Code</Link>}
+                  {project.liveUrl && <Link src={project.liveUrl} style={styles.projectLink}>Live Demo</Link>}
                 </View>
-                <Text style={styles.description}>{project.description}</Text>
-                <Text style={{ flexDirection: 'row', marginTop: 3 }}>
-                  {project.liveUrl && <Link src={project.liveUrl} style={styles.link}>Live Demo</Link>}
-                  {project.codeUrl && <Link src={project.codeUrl} style={styles.link}>Code</Link>}
-                </Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Certifications */}
+        {data.certifications && data.certifications.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Certifications</Text>
+            {data.certifications.map((cert, index) => (
+              <View key={index} style={styles.certifications}>
+                {cert.url ? (
+                  <Link src={cert.url} style={styles.certification}>{cert.name}</Link>
+                ) : (
+                  <Text style={styles.certification}>{cert.name}</Text>
+                )}
               </View>
             ))}
           </View>

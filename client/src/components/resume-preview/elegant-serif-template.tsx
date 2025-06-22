@@ -7,42 +7,60 @@ interface ElegantSerifTemplateProps {
 }
 
 export function ElegantSerifTemplate({ data }: ElegantSerifTemplateProps) {
+  const columnStyles: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '32px'
+  };
+
+  const sectionTitleStyles: React.CSSProperties = {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    color: '#4A5568',
+    marginBottom: '16px',
+    borderBottom: '2px solid #E2E8F0',
+    paddingBottom: '8px',
+    letterSpacing: '1px'
+  };
+  
   return (
-    <div className="bg-[#FAF9F6] text-gray-800 p-10 max-w-[210mm] mx-auto font-['Georgia',_serif]">
+    <div style={{ background: '#F7FAFC', color: '#2D3748', padding: '40px', maxWidth: '210mm', minHeight: '297mm', margin: 'auto', fontFamily: 'Georgia, serif' }}>
       {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-5xl font-bold mb-2 text-gray-900">{data.firstName} {data.lastName}</h1>
-        {data.jobTitle && <p className="text-xl font-medium text-gray-700 uppercase tracking-wider mb-4">{data.jobTitle}</p>}
-        <p className="text-base text-gray-600">
-          {data.email && <span className="mr-4">{data.email}</span>}
-          {data.phone && <span className="mr-4">{data.phone}</span>}
-          {data.location && <span className="mr-4">{data.location}</span>}
-          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline mr-4">LinkedIn</a>}
-          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">GitHub</a>}
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <h1 style={{ fontSize: '48px', fontWeight: 'bold', marginBottom: '8px', color: '#1A202C' }}>{data.firstName} {data.lastName}</h1>
+        {data.jobTitle && <p style={{ fontSize: '20px', fontWeight: 'normal', color: '#4A5568', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '16px' }}>{data.jobTitle}</p>}
+        <p style={{ fontSize: '14px', color: '#718096', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '8px 16px' }}>
+          {data.email && <span>{data.email}</span>}
+          {data.phone && <span>{data.phone}</span>}
+          {data.location && <span>{data.location}</span>}
+          {data.website && <a href={data.website} target="_blank" rel="noopener noreferrer" style={{ color: '#2B6CB0', textDecoration: 'underline' }}>Website</a>}
+          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#2B6CB0', textDecoration: 'underline' }}>LinkedIn</a>}
+          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" style={{ color: '#2B6CB0', textDecoration: 'underline' }}>GitHub</a>}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', borderTop: '1px solid #E2E8F0', paddingTop: '32px' }}>
         {/* Left Column */}
-        <div>
+        <div style={columnStyles}>
           {data.education && data.education.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold uppercase text-gray-700 mb-4 border-b-2 border-gray-300 pb-2">Education</h2>
+            <div>
+              <h2 style={sectionTitleStyles}>Education</h2>
               {data.education.map((edu, index) => (
-                <div key={index} className="mb-4 last:mb-0">
-                  <h3 className="text-lg font-semibold text-gray-900">{edu.degree}</h3>
-                  <div className="text-gray-700 text-sm font-serif">{edu.school}</div>
-                  <div className="text-gray-500 text-xs mb-1 font-serif">{formatExperienceDateRange(edu.startDate, edu.endDate, edu.current)}</div>
-                  {edu.description && <p className="text-sm text-gray-700 mt-1">{edu.description}</p>}
+                <div key={index} style={{ marginBottom: '16px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#2D3748' }}>{edu.degree}</h3>
+                  <div style={{ color: '#4A5568', fontSize: '16px' }}>{edu.school}</div>
+                  <div style={{ color: '#718096', fontSize: '14px', marginBottom: '4px' }}>{formatExperienceDateRange(edu.startDate, edu.endDate, edu.current)}</div>
+                  {edu.description && <p style={{ fontSize: '14px', color: '#4A5568', marginTop: '4px' }}>{edu.description}</p>}
                 </div>
               ))}
             </div>
           )}
 
           {data.skills && data.skills.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold uppercase text-gray-700 mb-4 border-b-2 border-gray-300 pb-2">Skills</h2>
-              <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
+            <div>
+              <h2 style={sectionTitleStyles}>Skills</h2>
+              <ul style={{ listStyleType: 'disc', listStylePosition: 'inside', color: '#4A5568', fontSize: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {data.skills.map((skill, index) => (
                   <li key={index}>{skill.name}</li>
                 ))}
@@ -51,66 +69,72 @@ export function ElegantSerifTemplate({ data }: ElegantSerifTemplateProps) {
           )}
 
           {data.certifications && data.certifications.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold uppercase text-gray-700 mb-4 border-b-2 border-gray-300 pb-2">Certifications</h2>
-              {data.certifications.map((cert, index) => (
-                <div key={index} className="mb-2 last:mb-0">
-                  <p className="text-base text-gray-700">{cert.name} ({cert.year})</p>
-                </div>
-              ))}
+            <div>
+              <h2 style={sectionTitleStyles}>Certifications</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {data.certifications.map((cert, index) => (
+                  <div key={index}>
+                    {cert.url ? (
+                      <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '16px', color: '#2B6CB0', textDecoration: 'underline' }}>{cert.name}</a>
+                    ) : (
+                      <span style={{ fontSize: '16px', color: '#4A5568' }}>{cert.name}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
 
         {/* Right Column */}
-        <div>
+        <div style={columnStyles}>
           {data.summary && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold uppercase text-gray-700 mb-4 border-b-2 border-gray-300 pb-2">Professional Summary</h2>
-              <p className="text-base text-gray-700 leading-relaxed">{data.summary}</p>
+            <div>
+              <h2 style={sectionTitleStyles}>Professional Summary</h2>
+              <p style={{ fontSize: '16px', color: '#4A5568', lineHeight: 1.6 }}>{data.summary}</p>
             </div>
           )}
 
           {data.experience && data.experience.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold uppercase text-gray-700 mb-4 border-b-2 border-gray-300 pb-2">Experience</h2>
+            <div>
+              <h2 style={sectionTitleStyles}>Experience</h2>
               {data.experience.map((exp, index) => (
-                <div key={index} className="mb-6 last:mb-0">
-                  <h3 className="text-lg font-semibold text-gray-900">{exp.position}</h3>
-                  <div className="text-gray-700 text-sm font-serif">{exp.company}</div>
-                  <div className="text-gray-500 text-xs mb-1 font-serif">{formatExperienceDateRange(exp.startDate, exp.endDate, exp.current)}</div>
-                  {exp.description && <ul className="list-disc list-inside text-sm text-gray-700"><li>{exp.description}</li></ul>}
+                <div key={index} style={{ marginBottom: '24px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#2D3748' }}>{exp.position}</h3>
+                  <div style={{ color: '#4A5568', fontSize: '16px' }}>{exp.company}</div>
+                  <div style={{ color: '#718096', fontSize: '14px', marginBottom: '4px' }}>{formatExperienceDateRange(exp.startDate, exp.endDate, exp.current)}</div>
+                  {exp.description && <p style={{ fontSize: '14px', color: '#4A5568', lineHeight: 1.5, marginTop: '4px' }}>{exp.description}</p>}
                 </div>
               ))}
             </div>
           )}
 
           {/* Projects */}
-          {data.projects.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-serif font-bold text-gray-800 mb-4 border-b border-gray-300 pb-2">Projects</h2>
-              <div className="space-y-6">
+          {data.projects && data.projects.length > 0 && (
+            <div>
+              <h2 style={sectionTitleStyles}>Projects</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 {data.projects.map((project, i) => (
-                  <div key={i} className="pl-4 border-l-2 border-gray-300">
-                    <h3 className="font-serif font-semibold text-gray-900">{project.name}</h3>
-                    <p className="text-gray-600 text-sm mt-1 font-serif">{project.description}</p>
+                  <div key={i}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 'semibold', color: '#2D3748' }}>{project.name}</h3>
+                    <p style={{ color: '#4A5568', fontSize: '14px', marginTop: '4px', lineHeight: 1.5 }}>{project.description}</p>
                     {project.tags && project.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
                         {project.tags.map((tag) => (
-                          <span key={tag} className="bg-gray-50 text-gray-700 px-2 py-1 rounded text-xs font-serif">
+                          <span key={tag} style={{ background: '#EDF2F7', color: '#4A5568', padding: '4px 10px', borderRadius: '4px', fontSize: '12px' }}>
                             {tag}
                           </span>
                         ))}
                       </div>
                     )}
-                    <div className="flex gap-4 mt-3">
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
                       {project.codeUrl && (
-                        <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" className="text-gray-600 text-sm hover:underline font-serif">
+                        <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#2B6CB0', fontSize: '14px', textDecoration: 'underline' }}>
                           View Code
                         </a>
                       )}
                       {project.liveUrl && (
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-gray-600 text-sm hover:underline font-serif">
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#2B6CB0', fontSize: '14px', textDecoration: 'underline' }}>
                           Live Demo
                         </a>
                       )}

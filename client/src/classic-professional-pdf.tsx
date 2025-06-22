@@ -1,20 +1,21 @@
 import { Document, Page, Text, View, StyleSheet, Link, Font } from "@react-pdf/renderer";
 import { ResumeData } from "@/types/schema";
 
-// Register Georgia font for minimalist template
+// Register Inter font
 Font.register({
-  family: "Georgia",
+  family: "Inter",
   fonts: [
-    { src: "https://fonts.gstatic.com/s/georgia/v18/1_O41XmXGXyjjClJ7D3SeyA.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/georgia/v18/1_O41XmXGXyjjClJ7D3SeyA.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/georgia/v18/1_O41XmXGXyjjClJ7D3SeyA.woff2", fontWeight: 700 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 400 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 500 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 600 },
+    { src: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 700 },
   ],
 });
 
 const styles = StyleSheet.create({
   page: {
     padding: 0,
-    fontFamily: "Georgia",
+    fontFamily: "Inter",
     color: '#222',
     backgroundColor: '#fff',
   },
@@ -22,17 +23,16 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: '100%',
     backgroundColor: '#fff',
-    border: '1px solid #E5E7EB',
   },
   header: {
-    borderBottom: '1px solid #E5E7EB',
+    borderBottom: '2px solid #15803D',
     padding: '40px 48px 24px 48px',
     textAlign: 'center',
   },
   name: {
     fontSize: 32,
     fontWeight: 700,
-    letterSpacing: 1,
+    color: '#15803D',
     marginBottom: 8,
   },
   contactInfo: {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   link: {
-    color: '#374151',
+    color: '#15803D',
     textDecoration: 'underline',
     fontSize: 15,
   },
@@ -62,12 +62,10 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   sectionTitle: {
-    fontWeight: 600,
+    color: '#15803D',
+    fontWeight: 700,
     fontSize: 18,
-    color: '#374151',
     marginBottom: 8,
-    borderLeft: '3px solid #E5E7EB',
-    paddingLeft: 12,
   },
   summary: {
     color: '#374151',
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   company: {
-    color: '#222',
+    color: '#15803D',
     fontSize: 13,
     marginBottom: 2,
   },
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   school: {
-    color: '#6B7280',
+    color: '#15803D',
     fontSize: 13,
     marginBottom: 2,
   },
@@ -116,8 +114,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   skill: {
-    background: '#F3F4F6',
-    color: '#222',
+    background: '#DCFCE7',
+    color: '#15803D',
     borderRadius: 6,
     padding: '2px 12px',
     fontSize: 13,
@@ -129,6 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     fontSize: 15,
     marginBottom: 2,
+    color: '#111827',
   },
   projectDescription: {
     color: '#374151',
@@ -136,36 +135,39 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
     marginBottom: 4,
   },
-  projectTags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 8,
-  },
-  projectTag: {
-    background: '#F3F4F6',
-    color: '#222',
-    borderRadius: 6,
-    padding: '2px 12px',
-    fontSize: 13,
-  },
   projectLinks: {
     flexDirection: 'row',
     gap: 16,
-    marginTop: 8,
+    marginTop: 4,
   },
   projectLink: {
-    color: '#6B7280',
+    color: '#15803D',
     fontSize: 13,
-    textDecoration: 'none',
+    textDecoration: 'underline',
+  },
+  certifications: {
+    marginBottom: 16,
+  },
+  certificationName: {
+    fontWeight: 600,
+    fontSize: 15,
+    marginBottom: 2,
+    color: '#111827',
+  },
+  certificationLink: {
+    fontWeight: 600,
+    fontSize: 15,
+    marginBottom: 2,
+    color: '#15803D',
+    textDecoration: 'underline',
   },
 });
 
-interface MinimalistPDFProps {
+interface ClassicProfessionalPDFProps {
   data: ResumeData;
 }
 
-export const MinimalistPDF = ({ data }: MinimalistPDFProps) => (
+export const ClassicProfessionalPDF = ({ data }: ClassicProfessionalPDFProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.container}>
@@ -190,7 +192,7 @@ export const MinimalistPDF = ({ data }: MinimalistPDFProps) => (
           {/* Summary */}
           {data.summary && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Profile</Text>
+              <Text style={styles.sectionTitle}>Professional Summary</Text>
               <Text style={styles.summary}>{data.summary}</Text>
             </View>
           )}
@@ -217,8 +219,7 @@ export const MinimalistPDF = ({ data }: MinimalistPDFProps) => (
               {data.education.map((edu, index) => (
                 <View key={index} style={styles.education}>
                   <Text style={styles.degree}>{edu.degree}</Text>
-                  <Text style={styles.school}>{edu.school}</Text>
-                  <Text style={styles.date}>{`${edu.startDate} - ${edu.current ? "Present" : edu.endDate}`}</Text>
+                  <Text style={styles.school}>{edu.school} | {edu.startDate} - {edu.current ? "Present" : edu.endDate}</Text>
                   {edu.description && <Text style={styles.description}>{edu.description}</Text>}
                 </View>
               ))}
@@ -239,6 +240,24 @@ export const MinimalistPDF = ({ data }: MinimalistPDFProps) => (
             </View>
           )}
 
+          {/* Certifications */}
+          {data.certifications && data.certifications.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Certifications</Text>
+              {data.certifications.map((cert, index) => (
+                <View key={index} style={styles.certifications}>
+                  {cert.url ? (
+                    <Link src={cert.url} style={styles.certificationLink}>
+                      {cert.name}
+                    </Link>
+                  ) : (
+                    <Text style={styles.certificationName}>{cert.name}</Text>
+                  )}
+                </View>
+              ))}
+            </View>
+          )}
+
           {/* Projects */}
           {data.projects && data.projects.length > 0 && (
             <View style={styles.section}>
@@ -247,16 +266,9 @@ export const MinimalistPDF = ({ data }: MinimalistPDFProps) => (
                 <View key={index} style={styles.projects}>
                   <Text style={styles.projectTitle}>{project.name}</Text>
                   <Text style={styles.projectDescription}>{project.description}</Text>
-                  {project.tags && project.tags.length > 0 && (
-                    <View style={styles.projectTags}>
-                      {project.tags.map((tag) => (
-                        <Text key={tag} style={styles.projectTag}>{tag}</Text>
-                      ))}
-                    </View>
-                  )}
                   <View style={styles.projectLinks}>
-                    {project.codeUrl && <Link src={project.codeUrl} style={styles.projectLink}>View Code</Link>}
                     {project.liveUrl && <Link src={project.liveUrl} style={styles.projectLink}>Live Demo</Link>}
+                    {project.codeUrl && <Link src={project.codeUrl} style={styles.projectLink}>Code</Link>}
                   </View>
                 </View>
               ))}

@@ -25,12 +25,12 @@ import { Card } from "@/components/ui/card";
 const experienceSchema = z.object({
   experience: z.array(z.object({
     id: z.string(),
-    position: z.string().min(1, "Position is required"),
-    company: z.string().min(1, "Company name is required"),
-    startDate: z.string().min(1, "Start date is required"),
+    position: z.string().optional(),
+    company: z.string().optional(),
+    startDate: z.string().optional(),
     endDate: z.string().default(""),
     current: z.boolean().default(false),
-    description: z.string().min(1, "Description is required"),
+    description: z.string().optional(),
   }))
 });
 
@@ -93,20 +93,31 @@ export function ExperienceForm({ data, onChange, onSave, onBack }: ExperienceFor
   };
 
   const onSubmit = (values: ExperienceFormValues) => {
-    onChange({ experience: values.experience });
+    // Ensure all required fields have default values to match the Experience interface
+    const validExperience = values.experience.map(exp => ({
+      id: exp.id,
+      position: exp.position || "",
+      company: exp.company || "",
+      startDate: exp.startDate || "",
+      endDate: exp.endDate || "",
+      current: exp.current || false,
+      description: exp.description || "",
+    }));
+    
+    onChange({ experience: validExperience });
     onSave();
   };
 
   return (
-    <div className="space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
+    <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-8 py-6 sm:py-8 md:py-10 space-y-6" style={{ fontFamily: 'Roboto Flex, Inter, Arial, sans-serif' }}>
       <div>
-        <h2 className="text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Experience</h2>
-        <p className="text-gray-600">Add your work experience.</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-green-700" style={{ fontFamily: 'inherit' }}>Experience (Optional)</h2>
+        <p className="text-gray-600 text-sm sm:text-base">Add your work experience. You can skip this if you don't have any.</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {data.experience.map((experience, index) => (
-            <Card key={experience.id} className="p-6 space-y-4 border border-green-200 rounded-lg shadow-sm bg-green-50/20">
+            <Card key={experience.id} className="p-4 sm:p-6 space-y-4 border border-green-200 rounded-xl shadow-xl bg-gradient-to-br from-green-50/40 to-white">
               <div className="flex justify-end items-center">
                 {data.experience.length > 1 && (
                   <Button
@@ -122,7 +133,7 @@ export function ExperienceForm({ data, onChange, onSave, onBack }: ExperienceFor
               </div>
 
               {/* Job Title, Company, Location */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
                   name={`experience.${index}.position`}
@@ -152,7 +163,7 @@ export function ExperienceForm({ data, onChange, onSave, onBack }: ExperienceFor
               </div>
 
               {/* Start Date, End Date, Is Current */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-end">
                 <FormField
                   control={form.control}
                   name={`experience.${index}.startDate`}
@@ -244,11 +255,11 @@ export function ExperienceForm({ data, onChange, onSave, onBack }: ExperienceFor
             Add Experience
           </Button>
 
-          <div className="flex justify-between mt-6">
-            <Button type="button" variant="outline" onClick={onBack} className="border-green-500 text-green-700 hover:bg-green-50">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 mt-6">
+            <Button type="button" variant="outline" onClick={onBack} className="w-full sm:w-auto border-green-500 text-green-700 hover:bg-green-50">
               Back
             </Button>
-            <Button type="submit" className="bg-green-500 text-white hover:bg-green-600">
+            <Button type="submit" className="w-full sm:w-auto bg-green-500 text-white hover:bg-green-600 rounded-lg transition font-semibold">
               Save & Continue
             </Button>
           </div>
