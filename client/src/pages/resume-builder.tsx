@@ -202,24 +202,6 @@ export default function ResumeBuilder() {
         </div>
       ) : (
         <div className="w-full flex-1 flex flex-col">
-          <div className="w-full flex justify-between items-center p-4 bg-gray-50 border-b">
-            <Button
-              variant="outline"
-              className="flex items-center gap-2"
-              onClick={() => setIsTemplateModalOpen(true)}
-            >
-              <Palette className="w-5 h-5 text-green-600" />
-              <span>Change Template</span>
-            </Button>
-            <Button onClick={handleDownload} disabled={isDownloading}>
-              {isDownloading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Download className="w-4 h-4" />
-              )}
-              <span className="ml-2">Download</span>
-            </Button>
-          </div>
           <div className="w-full flex-1 relative overflow-auto" data-resume-preview>
             <ResumePreview
               data={resumeData}
@@ -232,16 +214,6 @@ export default function ResumeBuilder() {
               }}
             />
           </div>
-          {isTemplateModalOpen && (
-            <TemplateSelector
-              selectedTemplate={selectedTemplate}
-              onSelectTemplate={(template) => {
-                handleTemplateChange(template);
-                setIsTemplateModalOpen(false);
-              }}
-              onClose={() => setIsTemplateModalOpen(false)}
-            />
-          )}
         </div>
       )}
     </div>
