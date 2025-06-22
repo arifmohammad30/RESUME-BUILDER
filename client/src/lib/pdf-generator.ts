@@ -49,20 +49,19 @@ export const generatePDF = async (data: ResumeData, template: TemplateType = "cl
     // Clone the A4-sized element to avoid modifying the original
     const clonedElement = previewContainer.firstElementChild.cloneNode(true) as HTMLElement;
     
-    // IMPORTANT: Reset transformations but keep the visual styling that matches the preview
+    // IMPORTANT: Reset transformations and remove decorative styles for a clean PDF
     clonedElement.style.transform = 'none';
-    clonedElement.style.margin = '0'; // Remove margin for PDF to fill page
+    clonedElement.style.margin = '0';
     clonedElement.style.maxWidth = 'none';
     clonedElement.style.maxHeight = 'none';
-    // Keep the border and styling that matches the preview
-    clonedElement.style.border = '1px solid #e5e7eb';
-    clonedElement.style.borderRadius = '16px'; // rounded-2xl = 16px
-    clonedElement.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)'; // shadow-2xl
+    clonedElement.style.border = 'none';
+    clonedElement.style.borderRadius = '0';
+    clonedElement.style.boxShadow = 'none';
     clonedElement.style.padding = '0';
     clonedElement.style.background = '#ffffff';
     clonedElement.style.width = '210mm';
-    clonedElement.style.height = '297mm';
-    clonedElement.style.overflow = 'hidden';
+    clonedElement.style.height = 'auto'; // Let content define the height
+    clonedElement.style.overflow = 'visible'; // Ensure nothing is clipped
 
     // Remove any interactive elements that shouldn't be in PDF
     const interactiveElements = clonedElement.querySelectorAll('button, input, select, textarea');
@@ -94,8 +93,8 @@ export const generatePDF = async (data: ResumeData, template: TemplateType = "cl
         padding: 0 !important;
         background: #fff !important;
         width: 210mm !important;
-        height: 297mm !important;
-        overflow: hidden !important;
+        height: auto !important;
+        overflow: visible !important;
       }
       * {
         box-sizing: border-box;

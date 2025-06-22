@@ -202,7 +202,7 @@ export default function ResumeBuilder() {
         </div>
       ) : (
         <div className="w-full flex-1 flex flex-col">
-          <div className="w-full flex-1 relative overflow-auto" data-resume-preview>
+          <div className="w-full flex-1 relative overflow-auto">
             <ResumePreview
               data={resumeData}
               template={selectedTemplate}
