@@ -133,7 +133,7 @@ export const generatePDF = async (data: ResumeData, template: TemplateType = "cl
     console.log('HTML content prepared, length:', htmlContent.length);
     console.log('Sending PDF request to server...');
     
-    const response = await fetch('YOUR_RENDER_SERVER_URL/api/generate-pdf', {
+    const response = await fetch('https://resume-builder-7slj.onrender.com/api/generate-pdf', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
