@@ -36,6 +36,8 @@ export default function ResumeBuilder() {
   const [showPreview, setShowPreview] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>("classic-professional");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [countdown, setCountdown] = useState(30);
+  const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null);
 
   const handleDataChange = (data: Partial<ResumeData>) => {
     setResumeData((prev) => ({ ...prev, ...data }));
@@ -70,6 +72,13 @@ export default function ResumeBuilder() {
   };
 
   const handleDownload = async () => {
+    // Start timer
+    setCountdown(30);
+    const intervalId = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    setTimerId(intervalId);
+
     try {
       setIsDownloading(true);
       await generatePDF(resumeData, selectedTemplate);
@@ -79,6 +88,9 @@ export default function ResumeBuilder() {
       alert("Failed to generate PDF. " + (err?.message || ""));
     } finally {
       setIsDownloading(false);
+      // Clear timer
+      clearInterval(intervalId);
+      setTimerId(null);
     }
   };
 
@@ -212,6 +224,24 @@ export default function ResumeBuilder() {
                 setCurrentStep(steps.length - 2);
               }}
             />
+          </div>
+          <div className="w-full flex-1 flex items-center justify-center">
+            <div className="flex items-center space-x-2">
+              <Button onClick={handleDownload} disabled={isDownloading}>
+                {isDownloading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4" />
+                )}
+                <span className="ml-2">Download</span>
+              </Button>
+              {isDownloading && (
+                <div className="flex items-center space-x-2 text-sm text-gray-500">
+                  <span>Generating...</span>
+                  <span>({countdown}s)</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
